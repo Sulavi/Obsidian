@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.SceneManagement;
 
 public class GameManager : Structures {
 
@@ -11,6 +13,9 @@ public class GameManager : Structures {
 
     public bool playerTurn = true; //Monster turn when false
     public Vector2 playerDest; //Stores where the player is moving so monster don't occupy that spot
+
+    public Text turnText;
+    public int turn = 1;
 
     // Use this for initialization
     void Start () {
@@ -32,9 +37,11 @@ public class GameManager : Structures {
 	// Update is called once per frame
 	void Update () {
 
-        //player.GetComponent<Player>().Begin();
-
-        if (playerTurn)
+        if(player == null)
+        {
+            SceneManager.LoadScene("Game Over");
+        }
+        else if (playerTurn)
         {
             player.GetComponent<Player>().TakeTurn();
         }
@@ -45,6 +52,9 @@ public class GameManager : Structures {
                 enemy.GetComponent<Monster>().TakeTurn();
             }
             playerTurn = true;
+
+            turn++;
+            turnText.text = "Turn: " + turn;
         }
 	}
 }
