@@ -46,6 +46,7 @@ public class Monster : Structures {
         walls = gameManager.walls;
 
         healthSlider.maxValue = maxHealth;
+        healthSlider.value = health;
     }
 
     public virtual void UpdateUI()
@@ -114,7 +115,11 @@ public class Monster : Structures {
 			
 			//Recalculate the remaining distance after moving.
 			sqrRemainingDistance = ((Vector2)transform.position - destination).sqrMagnitude;
-			
+
+            //Move the healthbar along with it
+            if(this.tag != "Player")
+                healthSlider.transform.position = new Vector3(transform.position.x, transform.position.y + (float)0.43);
+
 			//Return and loop until sqrRemainingDistance is close enough to zero to end the function
 			yield return null;
 		}
@@ -131,6 +136,7 @@ public class Monster : Structures {
 
         if(enemy.health <= 0)
         {
+            Destroy(enemy.healthSlider.gameObject);
             Destroy(ene);
             gameManager.enemies.Remove(ene);
         }
@@ -141,6 +147,7 @@ public class Monster : Structures {
 
     public virtual void TakeTurn()
     {
+        UpdateUI();
         int direction = (int)UnityEngine.Random.Range(0, 4);
         if (moving)
             return;
@@ -165,5 +172,6 @@ public class Monster : Structures {
         }
         gameManager.playerTurn = !gameManager.playerTurn;
     }*/
+
 
 }

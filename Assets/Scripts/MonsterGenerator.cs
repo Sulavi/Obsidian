@@ -16,18 +16,25 @@ public class MonsterGenerator : Structures {
 
 	Transform parent;
     GameObject rat;
-    Slider healthBar;
+
+    public Transform canvas;
+    public Slider healthBar;
 
 	void createAndParent(GameObject toInstantiate, Transform transform, int rotation, Transform parent2){
-        GameObject instance = Instantiate(toInstantiate, new Vector2(transform.position.x, transform.position.y), Quaternion.Euler(0, 0, -rotation)) as GameObject;
+        GameObject instance = Instantiate(toInstantiate, transform.position, Quaternion.Euler(0, 0, -rotation)) as GameObject;
 		instance.transform.SetParent (parent2);
         enemies.Add(instance);
-	}
 
+        //Instantiates the health bar and parents to the world canvas
+        Slider hBar = Instantiate(healthBar, new Vector2(transform.position.x, transform.position.y + (float)0.43), Quaternion.Euler(0, 0, 0)) as Slider;   //Positions it just below the top of the tile
+        hBar.transform.SetParent(canvas);
+        hBar.transform.localScale = new Vector3(1, 1, 1);   //The scale was changed on instantiation for some reason and this changes it back
+        instance.GetComponent<Monster>().healthSlider = hBar;
+    }
 
-	void loadResources(){
-        rat = Resources.Load("Monsters/Rat") as UnityEngine.GameObject;
-        healthBar = Resources.Load("HealthBar") as Slider;
+    void loadResources(){
+        rat = Resources.Load("Monsters/Rat") as GameObject;
+        //healthBar = Resources.Load("HealthBar") as Slider; //Doesn't work for some reason
 	}
 
 	public void Generate () {

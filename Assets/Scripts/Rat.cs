@@ -6,6 +6,7 @@ public class Rat : Monster {
 	// Use this for initialization
 	public override void Begin () {
 
+        maxHealth = 5;
         health = 5;
         pAttack = 1;
         pDefense = 0;
