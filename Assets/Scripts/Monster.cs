@@ -83,7 +83,7 @@ public class Monster : Structures {
         }
         else if((Vector2)player.transform.position == destination || destination == gameManager.playerDest)
         {
-            //StartCoroutine(Attack(player));
+            StartCoroutine(Attack(player));
             Debug.Log("Player Attacked");
             return true;
         }
